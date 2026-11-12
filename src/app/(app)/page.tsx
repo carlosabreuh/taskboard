@@ -17,7 +17,10 @@ export default async function TodayPage() {
   const thisWeek = tasks.filter(
     (t) => t.due_date && t.due_date > today && t.due_date <= weekEnd,
   );
-  const highNoDate = tasks.filter((t) => !t.due_date && t.priority === "high");
+  const anytime = tasks
+    .filter((t) => !t.due_date)
+    .sort((a, b) => (a.priority === "high" ? -1 : 0) - (b.priority === "high" ? -1 : 0));
+  const later = tasks.filter((t) => t.due_date && t.due_date > weekEnd);
 
   const greeting = (() => {
     const h = new Date().getHours();
@@ -79,9 +82,15 @@ export default async function TodayPage() {
         />
       </Section>
 
-      {highNoDate.length > 0 && (
-        <Section title="High priority, no date" count={highNoDate.length}>
-          <TaskList tasks={highNoDate} projects={projects} vanishWhenDone />
+      {anytime.length > 0 && (
+        <Section title="Anytime" count={anytime.length}>
+          <TaskList tasks={anytime} projects={projects} vanishWhenDone />
+        </Section>
+      )}
+
+      {later.length > 0 && (
+        <Section title="Later" count={later.length}>
+          <TaskList tasks={later} projects={projects} vanishWhenDone />
         </Section>
       )}
 
