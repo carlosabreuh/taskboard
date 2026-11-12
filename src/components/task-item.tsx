@@ -17,10 +17,13 @@ export function TaskItem({
   task,
   projects,
   showProject = true,
+  vanishWhenDone = false,
 }: {
   task: TaskWithProject;
   projects: ProjectOption[];
   showProject?: boolean;
+  /** Today view: a checked task fades out instead of lingering. */
+  vanishWhenDone?: boolean;
 }) {
   const [editing, setEditing] = useState(false);
   const [pending, startTransition] = useTransition();
@@ -137,8 +140,8 @@ export function TaskItem({
 
   return (
     <li
-      className={`group flex items-start gap-3 rounded-xl px-2 py-2.5 transition-[background-color,opacity] duration-200 hover:bg-surface-2/70 ${
-        done ? "opacity-55" : ""
+      className={`group flex items-start gap-3 rounded-xl px-2 py-2.5 transition-[background-color,opacity,transform] duration-300 hover:bg-surface-2/70 ${
+        done ? (vanishWhenDone ? "pointer-events-none opacity-0 -translate-x-2" : "opacity-55") : ""
       }`}
     >
       <button

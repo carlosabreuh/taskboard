@@ -4,14 +4,10 @@ import { QuickAdd } from "@/components/quick-add";
 import { aiEnabled } from "@/lib/ai";
 import { Section, TaskList } from "@/components/task-list";
 import { addDaysISO, todayISO } from "@/lib/dates";
-import { getOpenTasks, getProjectOptions, getRecentlyDone } from "@/lib/queries";
+import { getOpenTasks, getProjectOptions } from "@/lib/queries";
 
 export default async function TodayPage() {
-  const [tasks, projects, recentlyDone] = await Promise.all([
-    getOpenTasks(),
-    getProjectOptions(),
-    getRecentlyDone(5),
-  ]);
+  const [tasks, projects] = await Promise.all([getOpenTasks(), getProjectOptions()]);
 
   const today = todayISO();
   const weekEnd = addDaysISO(today, 7);
@@ -61,7 +57,7 @@ export default async function TodayPage() {
 
       {overdue.length > 0 && (
         <Section title="Overdue" count={overdue.length}>
-          <TaskList tasks={overdue} projects={projects} />
+          <TaskList tasks={overdue} projects={projects} vanishWhenDone />
         </Section>
       )}
 
@@ -69,6 +65,7 @@ export default async function TodayPage() {
         <TaskList
           tasks={dueToday}
           projects={projects}
+          vanishWhenDone
           empty="Nothing due today."
         />
       </Section>
@@ -77,23 +74,19 @@ export default async function TodayPage() {
         <TaskList
           tasks={thisWeek}
           projects={projects}
+          vanishWhenDone
           empty="Nothing coming up this week."
         />
       </Section>
 
       {highNoDate.length > 0 && (
         <Section title="High priority, no date" count={highNoDate.length}>
-          <TaskList tasks={highNoDate} projects={projects} />
+          <TaskList tasks={highNoDate} projects={projects} vanishWhenDone />
         </Section>
       )}
 
       <FieldNews />
 
-      {recentlyDone.length > 0 && (
-        <Section title="Recently done">
-          <TaskList tasks={recentlyDone} projects={projects} />
-        </Section>
-      )}
     </>
   );
 }

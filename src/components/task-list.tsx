@@ -8,11 +8,13 @@ export function TaskList({
   projects,
   showProject = true,
   empty = "Nothing here.",
+  vanishWhenDone = false,
 }: {
   tasks: TaskWithProject[];
   projects: ProjectOption[];
   showProject?: boolean;
   empty?: string;
+  vanishWhenDone?: boolean;
 }) {
   if (tasks.length === 0) {
     return <p className="px-3 py-3 text-sm text-ink-3">{empty}</p>;
@@ -25,6 +27,7 @@ export function TaskList({
           task={t}
           projects={projects}
           showProject={showProject}
+          vanishWhenDone={vanishWhenDone}
         />
       ))}
     </ul>
