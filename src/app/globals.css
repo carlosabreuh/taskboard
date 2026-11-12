@@ -2,30 +2,36 @@
 @import "@fontsource-variable/nunito";
 
 :root {
-  --bg: #fffcf4;
+  --bg: #f6f4ee;
+  --bg-top: #eef3f4;
+  --wash-sky: rgba(173, 205, 214, 0.55);
+  --wash-gold: rgba(255, 221, 140, 0.35);
   --surface: #ffffff;
-  --surface-2: #fbf4e2;
-  --line: #efe6cf;
-  --ink: #2b2619;
-  --ink-2: #6e6553;
-  --ink-3: #a79e8b;
+  --surface-2: #eef0ee;
+  --line: #e3e5e0;
+  --ink: #23272a;
+  --ink-2: #5f666b;
+  --ink-3: #9aa1a6;
   --accent: #e5a81a;
   --accent-soft: #fff1c6;
   --accent-ink: #2b2309;
   --leaf: #4f7d3b;
   --danger: #c2410c;
-  --shadow: 0 1px 2px rgba(96, 72, 10, 0.05), 0 10px 30px -14px rgba(96, 72, 10, 0.18);
+  --shadow: 0 1px 2px rgba(40, 60, 70, 0.05), 0 10px 30px -14px rgba(40, 60, 70, 0.16);
 }
 
 @media (prefers-color-scheme: dark) {
   :root {
-    --bg: #1b1913;
-    --surface: #24211a;
-    --surface-2: #2e2a20;
-    --line: #3a3528;
-    --ink: #f4eedf;
-    --ink-2: #bbb09a;
-    --ink-3: #7f7664;
+    --bg: #171a1b;
+    --bg-top: #1b2124;
+    --wash-sky: rgba(70, 110, 125, 0.35);
+    --wash-gold: rgba(160, 120, 30, 0.18);
+    --surface: #22262a;
+    --surface-2: #2b3034;
+    --line: #373d42;
+    --ink: #eef0ef;
+    --ink-2: #aeb5b9;
+    --ink-3: #737b80;
     --accent: #f2b61e;
     --accent-soft: #3d3215;
     --accent-ink: #1b1709;
@@ -61,6 +67,12 @@ html {
 body {
   background: var(--bg);
   color: var(--ink);
+  /* A still, early-morning wash: pale sky at the top settling into warm ivory. */
+  background-image:
+    radial-gradient(60% 45% at 85% -5%, var(--wash-sky) 0%, transparent 70%),
+    radial-gradient(55% 40% at 0% 100%, var(--wash-gold) 0%, transparent 70%),
+    linear-gradient(180deg, var(--bg-top) 0%, var(--bg) 60%);
+  background-attachment: fixed;
   font-family: var(--font-sans);
   font-size: 15px;
   -webkit-font-smoothing: antialiased;
