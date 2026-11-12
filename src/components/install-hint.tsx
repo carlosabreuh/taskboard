@@ -31,8 +31,9 @@ export function InstallHint() {
     const ua = navigator.userAgent;
     const isIOS = /iPhone|iPad|iPod/.test(ua) && !/CriOS|FxiOS/.test(ua);
     if (isIOS) {
-      setMode("ios");
-      return;
+      // Deferred a tick so the first paint isn't blocked on this decision.
+      const t = setTimeout(() => setMode("ios"), 0);
+      return () => clearTimeout(t);
     }
     function onPrompt(e: Event) {
       e.preventDefault();
