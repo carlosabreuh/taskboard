@@ -1,4 +1,6 @@
+import { PlanMyDay } from "@/components/plan-my-day";
 import { QuickAdd } from "@/components/quick-add";
+import { aiEnabled } from "@/lib/ai";
 import { Section, TaskList } from "@/components/task-list";
 import { addDaysISO, todayISO } from "@/lib/dates";
 import { getOpenTasks, getProjectOptions, getRecentlyDone } from "@/lib/queries";
@@ -28,6 +30,7 @@ export default async function TodayPage() {
   })();
 
   const open = tasks.length;
+  const ai = aiEnabled();
 
   return (
     <>
@@ -45,9 +48,15 @@ export default async function TodayPage() {
         </p>
       </header>
 
-      <div className="mb-8">
-        <QuickAdd projects={projects} defaultDue={today} />
+      <div className="mb-4">
+        <QuickAdd projects={projects} defaultDue={today} ai={ai} />
       </div>
+
+      {ai && (
+        <div className="mb-8">
+          <PlanMyDay openCount={open} />
+        </div>
+      )}
 
       {overdue.length > 0 && (
         <Section title="Overdue" count={overdue.length}>

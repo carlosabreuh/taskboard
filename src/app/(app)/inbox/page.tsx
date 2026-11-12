@@ -1,5 +1,7 @@
 import type { Metadata } from "next";
 import { QuickAdd } from "@/components/quick-add";
+import { SpreadsheetDrop } from "@/components/spreadsheet-drop";
+import { aiEnabled } from "@/lib/ai";
 import { Section, TaskList } from "@/components/task-list";
 import { getOpenTasks, getProjectOptions, getRecentlyDone } from "@/lib/queries";
 
@@ -12,6 +14,7 @@ export default async function InboxPage() {
     getRecentlyDone(25),
   ]);
 
+  const ai = aiEnabled();
   const doing = tasks.filter((t) => t.status === "doing");
   const dated = tasks.filter((t) => t.status !== "doing" && t.due_date);
   const undated = tasks.filter((t) => t.status !== "doing" && !t.due_date);
@@ -27,9 +30,14 @@ export default async function InboxPage() {
         </p>
       </header>
 
-      <div className="mb-8">
-        <QuickAdd projects={projects} />
+      <div className="mb-3">
+        <QuickAdd projects={projects} ai={ai} />
       </div>
+      {ai && (
+        <div className="mb-8">
+          <SpreadsheetDrop projectId={null} />
+        </div>
+      )}
 
       {doing.length > 0 && (
         <Section title="In progress" count={doing.length}>

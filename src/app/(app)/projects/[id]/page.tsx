@@ -2,6 +2,8 @@ import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { ProjectHeader } from "@/components/project-header";
 import { QuickAdd } from "@/components/quick-add";
+import { SpreadsheetDrop } from "@/components/spreadsheet-drop";
+import { aiEnabled } from "@/lib/ai";
 import { Section, TaskList } from "@/components/task-list";
 import { createClient } from "@/lib/supabase/server";
 import { getProjectOptions, TASK_SELECT } from "@/lib/queries";
@@ -43,6 +45,7 @@ export default async function ProjectPage({
     getProjectOptions(),
   ]);
 
+  const ai = aiEnabled();
   const tasks = (taskRows ?? []) as TaskWithProject[];
   const doing = tasks.filter((t) => t.status === "doing");
   const todo = tasks.filter((t) => t.status === "todo");
@@ -54,9 +57,14 @@ export default async function ProjectPage({
     <>
       <ProjectHeader project={project} done={done.length} total={tasks.length} />
 
-      <div className="mb-8">
-        <QuickAdd projects={projects} projectId={project.id} />
+      <div className="mb-3">
+        <QuickAdd projects={projects} projectId={project.id} ai={ai} />
       </div>
+      {ai && (
+        <div className="mb-8">
+          <SpreadsheetDrop projectId={project.id} projectName={project.name} />
+        </div>
+      )}
 
       {doing.length > 0 && (
         <Section title="In progress" count={doing.length}>

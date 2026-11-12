@@ -12,6 +12,14 @@ A private, single-user projects & tasks tracker. Next.js 16 (App Router) + Supab
 - Light/dark follows the device; works on phone and desktop
 - Single login (email + password). Row Level Security means only her account can ever read her rows.
 
+### AI features (optional — on when `ANTHROPIC_API_KEY` is set)
+
+- **Smart add** – type "call the vet Friday, high priority" and the task gets its date and priority. The toggle next to the add box turns it off for plain entry.
+- **Plan my day** – on Today: picks a realistic ordered list from everything open, with a reason per item; "Use this order" dates them today and sorts them.
+- **Drop a spreadsheet** – on All tasks or a project: .xlsx/.csv → plain-English summary + checkable list of tasks to import.
+
+Uses `claude-haiku-5-5` for parsing and `claude-sonnet-5-5` for planning/analysis. All calls run server-side; the key never reaches the browser. Without the key, these features are hidden and the app works as a plain tracker.
+
 ## Setup (≈15 minutes)
 
 ### 1. Supabase
@@ -34,7 +42,7 @@ npm run dev                  # http://localhost:3000
 
 1. Push this folder to a GitHub repo.
 2. vercel.com → **Add New → Project** → import the repo. Framework is auto-detected.
-3. Under **Environment Variables**, add `NEXT_PUBLIC_SUPABASE_URL` and `NEXT_PUBLIC_SUPABASE_ANON_KEY`.
+3. Under **Environment Variables**, add `NEXT_PUBLIC_SUPABASE_URL` and `NEXT_PUBLIC_SUPABASE_ANON_KEY`, plus `ANTHROPIC_API_KEY` (from console.anthropic.com) for the AI features.
 4. Deploy. You'll get a `*.vercel.app` URL — confirm login works there first.
 
 ### 4. Point the subdomain at it
@@ -52,6 +60,8 @@ src/proxy.ts                 refreshes the session cookie, redirects logged-out 
 src/lib/supabase/            browser + server Supabase clients (@supabase/ssr)
 src/lib/queries.ts           shared reads
 src/app/actions.ts           all writes (server actions): auth, projects, tasks
+src/app/ai-actions.ts        AI server actions: smart add, plan my day, spreadsheet analysis/import
+src/lib/ai.ts                Claude API calls (structured JSON outputs)
 src/app/login/               sign-in page
 src/app/(app)/               authenticated shell with sidebar nav
   page.tsx                   Today
