@@ -30,6 +30,19 @@ function weekday(): string {
 
 const AI_OFF = "AI features need an ANTHROPIC_API_KEY on the server.";
 
+/** Turn API failures into something a person can act on. */
+function friendly(e: unknown): string {
+  const msg = e instanceof Error ? e.message : String(e);
+  if (/credit balance|billing/i.test(msg))
+    return "The AI account is out of credits — add some at console.anthropic.com (Plans & Billing) and try again.";
+  if (/invalid x-api-key|authentication/i.test(msg))
+    return "The AI key on the server isn't valid. Check ANTHROPIC_API_KEY in Vercel and redeploy.";
+  if (/rate limit|overloaded|529/i.test(msg))
+    return "The AI is busy right now — give it a few seconds and try again.";
+  if (/JSON/i.test(msg)) return "The AI's answer came back garbled. Try once more.";
+  return "Something went wrong talking to the AI. Try again in a moment.";
+}
+
 /* ---------------- 1. Smart quick-add ---------------- */
 
 export async function smartAddTask(
@@ -51,7 +64,7 @@ export async function smartAddTask(
   try {
     parsed = await parseTaskText(clean, names, todayISO(), weekday());
   } catch (e) {
-    return { ok: false, error: `Couldn't read that: ${(e as Error).message}` };
+    return { ok: false, error: friendly(e) };
   }
 
   let projectId: string | null = lockedProjectId ?? null;
@@ -117,7 +130,7 @@ export async function planMyDay(): Promise<PlanResult> {
     );
     return { ok: true, plan, tasks };
   } catch (e) {
-    return { ok: false, error: `Planning failed: ${(e as Error).message}` };
+    return { ok: false, error: friendly(e) };
   }
 }
 
@@ -181,7 +194,7 @@ export async function analyzeSpreadsheet(form: FormData): Promise<SheetResult> {
     const analysis = await analyzeSheet(file.name, sheets, context, todayISO());
     return { ok: true, analysis, filename: file.name };
   } catch (e) {
-    return { ok: false, error: `Analysis failed: ${(e as Error).message}` };
+    return { ok: false, error: friendly(e) };
   }
 }
 
