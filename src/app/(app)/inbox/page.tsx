@@ -21,7 +21,7 @@ export default async function InboxPage() {
   return (
     <>
       <header className="mb-6">
-        <h1 className="text-2xl font-semibold tracking-tight">All tasks</h1>
+        <h1 className="text-2xl font-extrabold tracking-tight">All tasks</h1>
         <p className="mt-1 text-sm text-ink-2">
           Every open task, across every project.
         </p>

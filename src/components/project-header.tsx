@@ -76,11 +76,11 @@ export function ProjectHeader({
         />
         <div className="min-w-0 flex-1">
           <div className="flex flex-wrap items-center gap-2">
-            <h1 className="text-2xl font-semibold tracking-tight">
+            <h1 className="text-2xl font-extrabold tracking-tight">
               {project.name}
             </h1>
             {project.status !== "active" && (
-              <span className="rounded bg-surface-2 px-2 py-0.5 text-[11px] font-medium uppercase tracking-wide text-ink-2">
+              <span className="rounded-full bg-surface-2 px-2.5 py-0.5 text-xs font-semibold text-ink-2">
                 {PROJECT_STATUS_LABEL[project.status]}
               </span>
             )}

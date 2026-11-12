@@ -15,10 +15,10 @@ export function TaskList({
   empty?: string;
 }) {
   if (tasks.length === 0) {
-    return <p className="px-2 py-3 text-sm text-ink-3">{empty}</p>;
+    return <p className="px-3 py-3 text-sm text-ink-3">{empty}</p>;
   }
   return (
-    <ul className="divide-y divide-line/60">
+    <ul className="divide-y divide-line/70">
       {tasks.map((t) => (
         <TaskItem
           key={t.id}
@@ -41,16 +41,16 @@ export function Section({
   children: React.ReactNode;
 }) {
   return (
-    <section className="mb-8">
-      <h2 className="mb-2 flex items-baseline gap-2 px-2 text-sm font-semibold uppercase tracking-wider text-ink-2">
+    <section className="mb-7">
+      <h2 className="mb-2 flex items-baseline gap-2 px-3 text-[15px] font-bold text-ink">
         {title}
-        {typeof count === "number" && (
-          <span className="text-xs font-normal normal-case tracking-normal text-ink-3">
+        {typeof count === "number" && count > 0 && (
+          <span className="rounded-full bg-surface-2 px-2 py-0.5 text-[11px] font-semibold text-ink-2">
             {count}
           </span>
         )}
       </h2>
-      {children}
+      <div className="card px-2 py-1">{children}</div>
     </section>
   );
 }

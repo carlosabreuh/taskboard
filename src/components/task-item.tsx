@@ -35,7 +35,7 @@ export function TaskItem({
 
   if (editing) {
     return (
-      <li className="card p-4">
+      <li className="card my-1 p-4 ring-2 ring-accent/30">
         <form
           action={async (form) => {
             await updateTask(task.id, form);
@@ -135,21 +135,25 @@ export function TaskItem({
 
   return (
     <li
-      className={`group flex items-start gap-3 rounded-lg px-2 py-2 transition-colors hover:bg-surface-2 ${
-        done ? "opacity-60" : ""
+      className={`group flex items-start gap-3 rounded-xl px-2 py-2.5 transition-[background-color,opacity] duration-200 hover:bg-surface-2/70 ${
+        done ? "opacity-55" : ""
       }`}
     >
       <button
         type="button"
         onClick={toggle}
         aria-label={done ? "Mark not done" : "Mark done"}
-        className={`mt-0.5 flex h-5 w-5 shrink-0 items-center justify-center rounded-full border transition-colors ${
+        className={`mt-0.5 flex h-[22px] w-[22px] shrink-0 items-center justify-center rounded-full border-2 transition-[background-color,border-color] duration-200 ${
           done
-            ? "border-accent bg-accent text-accent-ink"
-            : "border-ink-3 hover:border-accent"
+            ? "check-done border-accent bg-accent text-accent-ink"
+            : "border-line hover:border-accent"
         }`}
       >
-        {done && <span className="text-[11px] leading-none">✓</span>}
+        {done && (
+          <svg viewBox="0 0 12 12" width="12" height="12" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
+            <path d="M2.5 6.5l2.5 2.5 4.5-5" />
+          </svg>
+        )}
       </button>
 
       <button
@@ -159,17 +163,17 @@ export function TaskItem({
       >
         <div className="flex flex-wrap items-center gap-x-2 gap-y-1">
           <span
-            className={`text-sm ${done ? "line-through text-ink-3" : "text-ink"}`}
+            className={`text-[15px] font-medium transition-colors ${done ? "line-through text-ink-3" : "text-ink"}`}
           >
             {task.title}
           </span>
           {task.status === "doing" && !done && (
-            <span className="rounded bg-accent/15 px-1.5 py-0.5 text-[10px] font-medium uppercase tracking-wide text-accent">
+            <span className="rounded-full bg-accent-soft px-2 py-0.5 text-[11px] font-semibold text-accent-ink dark:text-accent">
               In progress
             </span>
           )}
           {task.priority === "high" && !done && (
-            <span className="rounded bg-danger/10 px-1.5 py-0.5 text-[10px] font-medium uppercase tracking-wide text-danger">
+            <span className="rounded-full bg-danger/10 px-2 py-0.5 text-[11px] font-semibold text-danger">
               {PRIORITY_LABEL.high}
             </span>
           )}

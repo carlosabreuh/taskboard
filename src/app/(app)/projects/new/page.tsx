@@ -9,7 +9,7 @@ export default function NewProjectPage() {
   return (
     <>
       <header className="mb-6">
-        <h1 className="text-2xl font-semibold tracking-tight">New project</h1>
+        <h1 className="text-2xl font-extrabold tracking-tight">New project</h1>
       </header>
       <form action={createProject} className="card space-y-5 p-6">
         <ProjectFields />

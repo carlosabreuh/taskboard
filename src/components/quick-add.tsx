@@ -27,11 +27,11 @@ export function QuickAdd({
         formRef.current?.reset();
         setOpen(false);
       }}
-      className="card p-3"
+      className="card p-3.5"
     >
       {projectId && <input type="hidden" name="project_id" value={projectId} />}
       <div className="flex items-center gap-2">
-        <span className="flex h-5 w-5 shrink-0 items-center justify-center rounded-full border border-dashed border-ink-3 text-ink-3">
+        <span className="flex h-[22px] w-[22px] shrink-0 items-center justify-center rounded-full border-2 border-dashed border-line text-ink-3">
           +
         </span>
         <input
@@ -40,7 +40,7 @@ export function QuickAdd({
           required
           autoComplete="off"
           onFocus={() => setOpen(true)}
-          className="min-w-0 flex-1 bg-transparent text-sm outline-none placeholder:text-ink-3"
+          className="min-w-0 flex-1 bg-transparent text-[15px] outline-none placeholder:text-ink-3"
         />
         <button type="submit" className="btn-primary py-1.5 text-xs">
           Add

@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { Sunflower } from "@/components/sunflower";
 import { LoginForm } from "./login-form";
 
 export const metadata: Metadata = { title: "Sign in" };
@@ -13,10 +14,10 @@ export default async function LoginPage({
     <main className="flex flex-1 items-center justify-center px-4 py-12">
       <div className="w-full max-w-sm">
         <div className="mb-8 text-center">
-          <div className="mx-auto mb-3 flex h-12 w-12 items-center justify-center rounded-2xl bg-accent text-accent-ink text-xl font-semibold">
-            ✓
-          </div>
-          <h1 className="text-2xl font-semibold tracking-tight">Taskboard</h1>
+          <Sunflower size={64} className="mx-auto mb-4 drop-shadow-sm" />
+          <h1 className="text-[28px] font-extrabold tracking-tight">
+            Taskboard
+          </h1>
           <p className="mt-1 text-sm text-ink-2">
             Out of your head, into one place.
           </p>

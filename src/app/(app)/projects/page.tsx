@@ -23,7 +23,7 @@ export default async function ProjectsPage() {
     <>
       <header className="mb-6 flex items-end justify-between gap-4">
         <div>
-          <h1 className="text-2xl font-semibold tracking-tight">Projects</h1>
+          <h1 className="text-2xl font-extrabold tracking-tight">Projects</h1>
           <p className="mt-1 text-sm text-ink-2">
             {live.length} project{live.length === 1 ? "" : "s"}
           </p>
@@ -76,7 +76,7 @@ function ProjectCard({ project: p }: { project: ProjectRow }) {
     <li>
       <Link
         href={`/projects/${p.id}`}
-        className="card block p-4 transition-colors hover:border-accent/50"
+        className="card block p-4 transition-[transform,box-shadow] duration-200 hover:-translate-y-0.5"
       >
         <div className="flex items-start gap-3">
           <span
@@ -87,7 +87,7 @@ function ProjectCard({ project: p }: { project: ProjectRow }) {
             <div className="flex items-center justify-between gap-2">
               <h3 className="truncate font-medium">{p.name}</h3>
               {p.status !== "active" && (
-                <span className="shrink-0 rounded bg-surface-2 px-1.5 py-0.5 text-[10px] font-medium uppercase tracking-wide text-ink-2">
+                <span className="shrink-0 rounded-full bg-surface-2 px-2 py-0.5 text-[11px] font-semibold text-ink-2">
                   {PROJECT_STATUS_LABEL[p.status]}
                 </span>
               )}

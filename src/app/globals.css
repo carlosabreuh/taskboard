@@ -1,32 +1,37 @@
 @import "tailwindcss";
+@import "@fontsource-variable/nunito";
 
 :root {
-  --bg: #faf7f2;
+  --bg: #fffcf4;
   --surface: #ffffff;
-  --surface-2: #f3eee6;
-  --line: #e6dfd3;
-  --ink: #1f1b16;
-  --ink-2: #5c554b;
-  --ink-3: #9a9187;
-  --accent: #b45309;
-  --accent-ink: #ffffff;
-  --danger: #b91c1c;
-  --ok: #15803d;
+  --surface-2: #fbf4e2;
+  --line: #efe6cf;
+  --ink: #2b2619;
+  --ink-2: #6e6553;
+  --ink-3: #a79e8b;
+  --accent: #e5a81a;
+  --accent-soft: #fff1c6;
+  --accent-ink: #2b2309;
+  --leaf: #4f7d3b;
+  --danger: #c2410c;
+  --shadow: 0 1px 2px rgba(96, 72, 10, 0.05), 0 10px 30px -14px rgba(96, 72, 10, 0.18);
 }
 
 @media (prefers-color-scheme: dark) {
   :root {
-    --bg: #15120f;
-    --surface: #1e1a16;
-    --surface-2: #27221d;
-    --line: #342e27;
-    --ink: #f1ebe3;
-    --ink-2: #b8ada0;
-    --ink-3: #7d7369;
-    --accent: #f59e0b;
-    --accent-ink: #1f1b16;
-    --danger: #f87171;
-    --ok: #4ade80;
+    --bg: #1b1913;
+    --surface: #24211a;
+    --surface-2: #2e2a20;
+    --line: #3a3528;
+    --ink: #f4eedf;
+    --ink-2: #bbb09a;
+    --ink-3: #7f7664;
+    --accent: #f2b61e;
+    --accent-soft: #3d3215;
+    --accent-ink: #1b1709;
+    --leaf: #8fc273;
+    --danger: #fb923c;
+    --shadow: 0 1px 2px rgba(0, 0, 0, 0.3), 0 10px 30px -14px rgba(0, 0, 0, 0.6);
   }
 }
 
@@ -39,11 +44,14 @@
   --color-ink-2: var(--ink-2);
   --color-ink-3: var(--ink-3);
   --color-accent: var(--accent);
+  --color-accent-soft: var(--accent-soft);
   --color-accent-ink: var(--accent-ink);
+  --color-leaf: var(--leaf);
   --color-danger: var(--danger);
-  --color-ok: var(--ok);
-  --font-sans: var(--font-geist-sans), ui-sans-serif, system-ui, sans-serif;
-  --font-mono: var(--font-geist-mono), ui-monospace, monospace;
+  --font-sans: "Nunito Variable", ui-rounded, ui-sans-serif, system-ui, sans-serif;
+  --shadow-soft: var(--shadow);
+  --radius-xl: 1rem;
+  --radius-2xl: 1.25rem;
 }
 
 html {
@@ -54,20 +62,30 @@ body {
   background: var(--bg);
   color: var(--ink);
   font-family: var(--font-sans);
+  font-size: 15px;
   -webkit-font-smoothing: antialiased;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    transition-duration: 0.01ms !important;
+    animation-duration: 0.01ms !important;
+  }
 }
 
 /* Form controls */
 .input {
-  @apply w-full rounded-lg border border-line bg-surface px-3 py-2 text-sm text-ink placeholder:text-ink-3 outline-none focus:border-accent focus:ring-2 focus:ring-accent/20;
+  @apply w-full rounded-xl border border-line bg-surface px-3.5 py-2.5 text-sm text-ink placeholder:text-ink-3 outline-none transition-[box-shadow,border-color] duration-200 focus:border-accent focus:ring-4 focus:ring-accent/15;
 }
 .btn-primary,
 .btn-ghost,
 .btn-danger {
-  @apply inline-flex items-center justify-center gap-1.5 rounded-lg px-3 py-2 text-sm font-medium transition-colors disabled:opacity-50 disabled:cursor-not-allowed;
+  @apply inline-flex items-center justify-center gap-1.5 rounded-full px-4 py-2 text-sm font-semibold transition-[background-color,color,transform,box-shadow] duration-200 active:scale-[0.97] disabled:cursor-not-allowed disabled:opacity-50;
 }
 .btn-primary {
-  @apply bg-accent text-accent-ink hover:opacity-90;
+  @apply bg-accent text-accent-ink shadow-soft hover:brightness-105;
 }
 .btn-ghost {
   @apply text-ink-2 hover:bg-surface-2 hover:text-ink;
@@ -76,8 +94,18 @@ body {
   @apply text-danger hover:bg-danger/10;
 }
 .card {
-  @apply rounded-xl border border-line bg-surface;
+  @apply rounded-2xl bg-surface shadow-soft;
 }
 .label {
-  @apply mb-1 block text-xs font-medium text-ink-2;
+  @apply mb-1.5 block text-xs font-semibold text-ink-2;
+}
+
+/* Task check: a little bloom when it's done */
+@keyframes bloom {
+  0% { transform: scale(0.6); }
+  60% { transform: scale(1.15); }
+  100% { transform: scale(1); }
+}
+.check-done {
+  animation: bloom 260ms cubic-bezier(0.2, 0.9, 0.3, 1.3);
 }
