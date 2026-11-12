@@ -10,24 +10,14 @@ function when(iso: string | null): string {
   return d.toLocaleDateString(undefined, { month: "short", day: "numeric" });
 }
 
-/** A quiet card of what's new in Chiari, syringomyelia and related research. */
+/** Recent university and clinical research news on Chiari, syringomyelia and EDS. */
 export async function FieldNews() {
   const items = await getFieldNews();
   if (items.length === 0) return null;
 
   return (
     <section className="mb-7">
-      <h2 className="mb-2 flex items-baseline justify-between px-3 text-[15px] font-bold text-ink">
-        From the field
-        <a
-          href="https://bobbyjonescsf.org/whatshappening/"
-          target="_blank"
-          rel="noreferrer"
-          className="text-xs font-semibold text-ink-3 hover:text-accent-ink dark:hover:text-accent"
-        >
-          Bobby Jones CSF ↗
-        </a>
-      </h2>
+      <h2 className="mb-2 px-3 text-[15px] font-bold text-ink">From the research world</h2>
       <ul className="card divide-y divide-line/70 px-2 py-1">
         {items.map((n) => (
           <li key={n.url}>

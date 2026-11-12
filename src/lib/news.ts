@@ -8,14 +8,15 @@ export interface NewsItem {
 }
 
 const FEEDS: { url: string; source: string; take: number }[] = [
-  { url: "https://bobbyjonescsf.org/feed/", source: "Bobby Jones CSF", take: 2 },
   {
     url:
       "https://news.google.com/rss/search?q=" +
-      encodeURIComponent('"chiari malformation" OR syringomyelia OR "ehlers-danlos" research') +
+      encodeURIComponent(
+        '("chiari malformation" OR syringomyelia OR "ehlers-danlos") (university OR study OR researchers OR neurosurgery)',
+      ) +
       "&hl=en-US&gl=US&ceid=US:en",
-    source: "Research & news",
-    take: 3,
+    source: "Research",
+    take: 4,
   },
 ];
 
