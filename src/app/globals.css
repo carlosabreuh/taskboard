@@ -78,6 +78,13 @@ body {
   -webkit-font-smoothing: antialiased;
 }
 
+/* Installed as an app: respect the notch / home indicator. */
+@media (display-mode: standalone) {
+  body {
+    padding-top: env(safe-area-inset-top);
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
   *,
   *::before,

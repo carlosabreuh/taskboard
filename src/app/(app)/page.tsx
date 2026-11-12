@@ -1,4 +1,5 @@
 import { FieldNews } from "@/components/field-news";
+import { InstallHint } from "@/components/install-hint";
 import { PlanMyDay } from "@/components/plan-my-day";
 import { QuickAdd } from "@/components/quick-add";
 import { aiEnabled } from "@/lib/ai";
@@ -34,6 +35,8 @@ export default async function TodayPage() {
 
   return (
     <>
+      <InstallHint />
+
       <header className="mb-6">
         <h1 className="text-2xl font-extrabold tracking-tight">{greeting}</h1>
         <p className="mt-1 text-sm text-ink-2">
