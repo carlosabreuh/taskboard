@@ -39,10 +39,10 @@ npm run dev                  # http://localhost:3000
 
 ### 4. Point the subdomain at it
 
-1. Vercel → project → **Settings → Domains** → add `HERNAME.abreuh.com`.
-2. At your DNS provider for abreuh.com, add the record Vercel shows — a **CNAME** for `HERNAME` → `cname.vercel-dns.com`.
+1. Vercel → project → **Settings → Domains** → add `kaitlyn.abreuh.com`.
+2. At your DNS provider for abreuh.com, add the record Vercel shows — a **CNAME** for `kaitlyn` → `cname.vercel-dns.com`.
 3. Wait for it to verify (usually minutes). Vercel issues the TLS cert automatically.
-4. Supabase → **Authentication → URL Configuration**: set **Site URL** to `https://HERNAME.abreuh.com`.
+4. Supabase → **Authentication → URL Configuration**: set **Site URL** to `https://kaitlyn.abreuh.com`.
 
 ## Project layout
 
