@@ -57,8 +57,18 @@ export default async function AppLayout({ children }: LayoutProps<"/">) {
         </div>
       </aside>
 
-      <main className="flex-1 px-4 pt-3 pb-28 md:px-10 md:py-10">
-        <div className="mx-auto w-full max-w-3xl">{children}</div>
+      <main className="flex flex-1 flex-col px-4 pt-3 pb-28 md:px-10 md:py-10">
+        <div className="mx-auto w-full max-w-3xl flex-1">{children}</div>
+        <p className="mx-auto mt-12 flex w-full max-w-3xl items-center justify-center gap-1.5 text-sm text-ink-3">
+          With
+          <svg viewBox="0 0 24 24" width="15" height="15" aria-label="love" role="img" className="inline-block -mt-px">
+            <path
+              d="M12 21s-7.5-4.6-9.6-9.2C.9 8.4 3 4.6 6.7 4.6c2 0 3.6 1.1 4.3 2.4.7-1.3 2.3-2.4 4.3-2.4 3.7 0 5.8 3.8 4.3 7.2C19.5 16.4 12 21 12 21z"
+              fill="#b8463f"
+            />
+          </svg>
+          Carlos
+        </p>
       </main>
 
       <TabBar />
