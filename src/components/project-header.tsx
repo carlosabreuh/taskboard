@@ -3,6 +3,7 @@
 import { useState, useTransition } from "react";
 import { useRouter } from "next/navigation";
 import { deleteProject, setProjectStatus, updateProject } from "@/app/actions";
+import { announceDelete } from "./undo-toast";
 import { ProjectFields } from "./project-form";
 import { formatDue, isOverdue } from "@/lib/dates";
 import { PROJECT_STATUS_LABEL, type Project } from "@/lib/types";
@@ -39,11 +40,8 @@ export function ProjectHeader({
             className="btn-danger -ml-3"
             disabled={pending}
             onClick={() => {
-              if (
-                confirm(
-                  `Delete "${project.name}" and all ${total} of its tasks? This can't be undone.`,
-                )
-              ) {
+              if (confirm(`Delete "${project.name}" and its ${total} tasks? You can restore it from Recently deleted for 30 days.`)) {
+                announceDelete({ kind: "project", id: project.id, label: project.name });
                 startTransition(() => deleteProject(project.id));
               }
             }}

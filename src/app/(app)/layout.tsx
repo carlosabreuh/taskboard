@@ -4,6 +4,7 @@ import { createClient } from "@/lib/supabase/server";
 import { signOut } from "@/app/actions";
 import { NavLinks, TabBar } from "@/components/nav-links";
 import { Sunflower } from "@/components/sunflower";
+import { UndoToast } from "@/components/undo-toast";
 import type { Project } from "@/lib/types";
 
 export default async function AppLayout({ children }: LayoutProps<"/">) {
@@ -16,6 +17,7 @@ export default async function AppLayout({ children }: LayoutProps<"/">) {
   const { data } = await supabase
     .from("projects")
     .select("id, name, color, status")
+    .is("deleted_at", null)
     .neq("status", "archived")
     .order("created_at", { ascending: true });
   const projects = (data ?? []) as Pick<
@@ -54,6 +56,7 @@ export default async function AppLayout({ children }: LayoutProps<"/">) {
       </main>
 
       <TabBar />
+      <UndoToast />
     </div>
   );
 }

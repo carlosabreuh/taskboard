@@ -6,13 +6,14 @@ import { PROJECT_STATUS_LABEL, type Project } from "@/lib/types";
 
 export const metadata: Metadata = { title: "Projects" };
 
-type ProjectRow = Project & { tasks: { status: string }[] };
+type ProjectRow = Project & { tasks: { status: string; deleted_at: string | null }[] };
 
 export default async function ProjectsPage() {
   const supabase = await createClient();
   const { data } = await supabase
     .from("projects")
-    .select("*, tasks(status)")
+    .select("*, tasks(status, deleted_at)")
+    .is("deleted_at", null)
     .order("created_at", { ascending: false });
 
   const projects = (data ?? []) as ProjectRow[];
@@ -50,6 +51,10 @@ export default async function ProjectsPage() {
         </ul>
       )}
 
+      <p className="mt-8 text-center text-xs md:hidden">
+        <Link href="/trash" className="font-semibold text-ink-3">Recently deleted</Link>
+      </p>
+
       {archived.length > 0 && (
         <details className="mt-10">
           <summary className="cursor-pointer text-sm text-ink-3">
@@ -67,8 +72,9 @@ export default async function ProjectsPage() {
 }
 
 function ProjectCard({ project: p }: { project: ProjectRow }) {
-  const total = p.tasks.length;
-  const done = p.tasks.filter((t) => t.status === "done").length;
+  const live = p.tasks.filter((t) => !t.deleted_at);
+  const total = live.length;
+  const done = live.filter((t) => t.status === "done").length;
   const pct = total ? Math.round((done / total) * 100) : 0;
   const overdue = p.status === "active" && isOverdue(p.due_date);
 

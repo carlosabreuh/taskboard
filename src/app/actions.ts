@@ -101,12 +101,24 @@ export async function setProjectStatus(id: string, status: ProjectStatus) {
   revalidatePath(`/projects/${id}`);
 }
 
+/** Soft delete: the project and its tasks go to Recently deleted for 30 days. */
 export async function deleteProject(id: string) {
   const { supabase } = await requireUser();
-  const { error } = await supabase.from("projects").delete().eq("id", id);
+  const now = new Date().toISOString();
+  const { error } = await supabase
+    .from("projects")
+    .update({ deleted_at: now })
+    .eq("id", id);
   if (error) throw new Error(error.message);
-  revalidatePath("/");
-  redirect("/");
+  // Tasks keep their own deleted_at only if they weren't already in the trash,
+  // so restoring the project brings back exactly what was live.
+  await supabase
+    .from("tasks")
+    .update({ deleted_at: now })
+    .eq("project_id", id)
+    .is("deleted_at", null);
+  revalidatePath("/", "layout");
+  redirect("/projects");
 }
 
 /* ---------------- Tasks ---------------- */
@@ -176,9 +188,77 @@ export async function toggleTaskDone(id: string, done: boolean) {
   return setTaskStatus(id, done ? "done" : "todo");
 }
 
+/** Soft delete: the task sits in Recently deleted for 30 days. */
 export async function deleteTask(id: string) {
+  const { supabase } = await requireUser();
+  const { error } = await supabase
+    .from("tasks")
+    .update({ deleted_at: new Date().toISOString() })
+    .eq("id", id);
+  if (error) throw new Error(error.message);
+  revalidatePath("/", "layout");
+}
+
+/* ---------------- Recently deleted ---------------- */
+
+export async function restoreTask(id: string) {
+  const { supabase } = await requireUser();
+  const { error } = await supabase
+    .from("tasks")
+    .update({ deleted_at: null })
+    .eq("id", id);
+  if (error) throw new Error(error.message);
+  revalidatePath("/", "layout");
+}
+
+export async function restoreProject(id: string) {
+  const { supabase } = await requireUser();
+  const { data: project } = await supabase
+    .from("projects")
+    .select("deleted_at")
+    .eq("id", id)
+    .single();
+  const { error } = await supabase
+    .from("projects")
+    .update({ deleted_at: null })
+    .eq("id", id);
+  if (error) throw new Error(error.message);
+  // Bring back the tasks that were deleted together with the project.
+  if (project?.deleted_at) {
+    await supabase
+      .from("tasks")
+      .update({ deleted_at: null })
+      .eq("project_id", id)
+      .eq("deleted_at", project.deleted_at);
+  }
+  revalidatePath("/", "layout");
+}
+
+export async function destroyTask(id: string) {
   const { supabase } = await requireUser();
   const { error } = await supabase.from("tasks").delete().eq("id", id);
   if (error) throw new Error(error.message);
+  revalidatePath("/trash");
+}
+
+export async function destroyProject(id: string) {
+  const { supabase } = await requireUser();
+  const { error } = await supabase.from("projects").delete().eq("id", id); // cascades to its tasks
+  if (error) throw new Error(error.message);
+  revalidatePath("/trash");
+}
+
+export async function emptyTrash() {
+  const { supabase } = await requireUser();
+  await supabase.from("tasks").delete().not("deleted_at", "is", null);
+  await supabase.from("projects").delete().not("deleted_at", "is", null);
   revalidatePath("/", "layout");
+}
+
+/** Anything deleted more than 30 days ago is removed for good. */
+export async function purgeOldTrash() {
+  const { supabase } = await requireUser();
+  const cutoff = new Date(Date.now() - 30 * 86400 * 1000).toISOString();
+  await supabase.from("tasks").delete().lt("deleted_at", cutoff);
+  await supabase.from("projects").delete().lt("deleted_at", cutoff);
 }

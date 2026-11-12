@@ -12,6 +12,7 @@ create table if not exists public.projects (
   color       text not null default '#7c6f64',
   status      text not null default 'active' check (status in ('active', 'on_hold', 'done', 'archived')),
   due_date    date,
+  deleted_at  timestamptz,
   created_at  timestamptz not null default now(),
   updated_at  timestamptz not null default now()
 );
@@ -28,6 +29,7 @@ create table if not exists public.tasks (
   due_date    date,
   position    bigint not null default 0,
   completed_at timestamptz,
+  deleted_at  timestamptz,
   created_at  timestamptz not null default now(),
   updated_at  timestamptz not null default now()
 );
@@ -35,6 +37,8 @@ create table if not exists public.tasks (
 create index if not exists tasks_user_project_idx on public.tasks (user_id, project_id);
 create index if not exists tasks_user_due_idx     on public.tasks (user_id, due_date) where status <> 'done';
 create index if not exists projects_user_idx      on public.projects (user_id);
+create index if not exists tasks_user_deleted_idx    on public.tasks (user_id, deleted_at) where deleted_at is not null;
+create index if not exists projects_user_deleted_idx on public.projects (user_id, deleted_at) where deleted_at is not null;
 
 -- ---------- updated_at trigger ----------
 create or replace function public.set_updated_at()

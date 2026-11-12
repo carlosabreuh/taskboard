@@ -57,6 +57,7 @@ export async function smartAddTask(
   const { data: projects } = await supabase
     .from("projects")
     .select("id, name")
+    .is("deleted_at", null)
     .neq("status", "archived");
   const names = (projects ?? []).map((p) => p.name);
 
@@ -100,6 +101,7 @@ export async function planMyDay(): Promise<PlanResult> {
   const { data } = await supabase
     .from("tasks")
     .select("id, title, due_date, priority, status, notes, projects(name)")
+    .is("deleted_at", null)
     .neq("status", "done")
     .order("due_date", { ascending: true, nullsFirst: false })
     .limit(80);

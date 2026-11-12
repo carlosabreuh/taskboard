@@ -8,6 +8,7 @@ export async function getProjectOptions() {
   const { data } = await supabase
     .from("projects")
     .select("id, name, color")
+    .is("deleted_at", null)
     .neq("status", "archived")
     .order("name");
   return (data ?? []) as Pick<Project, "id" | "name" | "color">[];
@@ -18,6 +19,7 @@ export async function getOpenTasks() {
   const { data } = await supabase
     .from("tasks")
     .select(TASK_SELECT)
+    .is("deleted_at", null)
     .neq("status", "done")
     .order("due_date", { ascending: true, nullsFirst: false })
     .order("position", { ascending: true });
@@ -29,6 +31,7 @@ export async function getRecentlyDone(limit = 10) {
   const { data } = await supabase
     .from("tasks")
     .select(TASK_SELECT)
+    .is("deleted_at", null)
     .eq("status", "done")
     .order("completed_at", { ascending: false })
     .limit(limit);

@@ -15,6 +15,7 @@ async function loadProject(id: string) {
     .from("projects")
     .select("*")
     .eq("id", id)
+    .is("deleted_at", null)
     .maybeSingle();
   return data as Project | null;
 }
@@ -40,6 +41,7 @@ export default async function ProjectPage({
       .from("tasks")
       .select(TASK_SELECT)
       .eq("project_id", id)
+      .is("deleted_at", null)
       .order("due_date", { ascending: true, nullsFirst: false })
       .order("position", { ascending: true }),
     getProjectOptions(),

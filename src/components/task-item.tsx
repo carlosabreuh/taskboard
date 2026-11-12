@@ -3,6 +3,7 @@
 import { useState, useTransition } from "react";
 import Link from "next/link";
 import { deleteTask, toggleTaskDone, updateTask } from "@/app/actions";
+import { announceDelete } from "./undo-toast";
 import { formatDue, isOverdue } from "@/lib/dates";
 import {
   PRIORITY_LABEL,
@@ -108,9 +109,10 @@ export function TaskItem({
               type="button"
               className="btn-danger -ml-3"
               onClick={() => {
-                if (confirm("Delete this task?")) {
-                  startTransition(() => deleteTask(task.id));
-                }
+                startTransition(async () => {
+                  await deleteTask(task.id);
+                  announceDelete({ kind: "task", id: task.id, label: task.title });
+                });
               }}
             >
               Delete
