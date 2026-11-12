@@ -1,3 +1,4 @@
+import { FieldNews } from "@/components/field-news";
 import { PlanMyDay } from "@/components/plan-my-day";
 import { QuickAdd } from "@/components/quick-add";
 import { aiEnabled } from "@/lib/ai";
@@ -85,6 +86,8 @@ export default async function TodayPage() {
           <TaskList tasks={highNoDate} projects={projects} />
         </Section>
       )}
+
+      <FieldNews />
 
       {recentlyDone.length > 0 && (
         <Section title="Recently done">

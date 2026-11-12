@@ -3,6 +3,7 @@ import Link from "next/link";
 import { createClient } from "@/lib/supabase/server";
 import { formatDue, isOverdue } from "@/lib/dates";
 import { PROJECT_STATUS_LABEL, type Project } from "@/lib/types";
+import { TourButton } from "@/components/welcome-tour";
 
 export const metadata: Metadata = { title: "Projects" };
 
@@ -53,6 +54,8 @@ export default async function ProjectsPage() {
 
       <p className="mt-8 text-center text-xs md:hidden">
         <Link href="/trash" className="font-semibold text-ink-3">Recently deleted</Link>
+        <span className="mx-2 text-ink-3">·</span>
+        <TourButton className="font-semibold text-ink-3" />
       </p>
 
       {archived.length > 0 && (

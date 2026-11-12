@@ -39,6 +39,11 @@ export async function signIn(
   redirect(next.startsWith("/") ? next : "/");
 }
 
+export async function markTourSeen() {
+  const supabase = await createClient();
+  await supabase.auth.updateUser({ data: { tour_seen: true } });
+}
+
 export async function signOut() {
   const supabase = await createClient();
   await supabase.auth.signOut();

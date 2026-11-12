@@ -5,6 +5,7 @@ import { signOut } from "@/app/actions";
 import { NavLinks, TabBar } from "@/components/nav-links";
 import { Sunflower } from "@/components/sunflower";
 import { UndoToast } from "@/components/undo-toast";
+import { TourButton, WelcomeTour } from "@/components/welcome-tour";
 import type { Project } from "@/lib/types";
 
 export default async function AppLayout({ children }: LayoutProps<"/">) {
@@ -45,10 +46,15 @@ export default async function AppLayout({ children }: LayoutProps<"/">) {
           Taskboard
         </Link>
         <NavLinks projects={projects} />
-        <form action={signOut} className="mt-auto px-3">
+        <div className="mt-auto px-3">
           <p className="mb-1 truncate text-xs text-ink-3">{user.email}</p>
-          <button className="btn-ghost -ml-4 text-xs">Sign out</button>
-        </form>
+          <div className="-ml-4 flex items-center">
+            <TourButton className="btn-ghost text-xs" />
+            <form action={signOut}>
+              <button className="btn-ghost text-xs">Sign out</button>
+            </form>
+          </div>
+        </div>
       </aside>
 
       <main className="flex-1 px-4 pt-3 pb-28 md:px-10 md:py-10">
@@ -57,6 +63,7 @@ export default async function AppLayout({ children }: LayoutProps<"/">) {
 
       <TabBar />
       <UndoToast />
+      <WelcomeTour open={user.user_metadata?.tour_seen !== true} />
     </div>
   );
 }
